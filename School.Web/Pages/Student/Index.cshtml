@@ -1,0 +1,130 @@
+﻿@page
+@using School.Web.Model
+@model School.Web.Pages.Student.IndexModel
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="list-group">
+                <a href="/Student/Create" type="button" class="list-group-item list-group-item-action">Agregar</a>
+            </div>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Genero</th>
+                        <th>Fecha de cumpleaños</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Students != null && Model.Students.Any())
+                    {
+                        @foreach (var students in Model.Students)
+                        {
+                            <tr>
+                                <td data-bs-toggle="modal" data-bs-target="#Modal"
+                                    data-name="@students.Name" data-name="@students.Name">
+                                    @students.Name
+                                </td>
+                                <td data-bs-toggle="modal" data-bs-target="#Modal"
+                                    data-lastname="@students.LastName" data-name="@students.LastName">
+                                    @students.LastName
+                                </td>
+                                <td data-bs-toggle="modal" data-bs-target="#Modal"
+                                    data-gender="@students.Gender" data-name="@students.Gender">
+                                    @students.Gender
+                                </td>
+                                <td data-bs-toggle="modal" data-bs-target="#Modal"
+                                    data-birthday="@students.BirthDate" data-name="@students.BirthDate">
+                                    @students.BirthDate
+                                </td>
+                                <td>
+                                    <a href="/Student/Update?id=@students.Id" class="btn btn-warning">Actualizar</a>
+
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@students.Id" class="d-inline delete-form">
+                                        <button type="button" class="btn btn-danger" onclick="showDeleteConfirmationModal(this)">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Detalles de la Categoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nombre:</strong> <span id="modalName"></span></p>
+                <p><strong>Apellido:</strong> <span id="modalLastName"></span></p>
+                <p><strong>Genero:</strong> <span id="modalGeder"></span></p>
+                <p><strong>Fecha de nacimiento:</strong> <span id="modalBirthDay"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro que deseas eliminar este estudiante?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var Name = button.data('-name');
+                var LastName = button.data('-lastname');
+                var Gender = button.data('-gender');
+                var BirthDay = button.data('-birthday');
+
+                $('#modalName').text(Name);
+                $('#modalLastName').text(LastName);
+                $('#modalGeder').text(Gender);
+                $('#modalBirthDay').text(BirthDay);
+            });
+
+            var formToSubmit;
+
+            window.showDeleteConfirmationModal = function (button) {
+                formToSubmit = $(button).closest('form');
+                var deleteConfirmationModal = new bootstrap.Modal($('#deleteConfirmationModal')[0]);
+                deleteConfirmationModal.show();
+            };
+
+            $('#confirmDeleteButton').on('click', function () {
+                formToSubmit.submit();
+            });
+        });
+    </script>
+}

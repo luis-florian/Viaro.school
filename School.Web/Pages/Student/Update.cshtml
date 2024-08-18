@@ -1,0 +1,40 @@
+﻿@page
+@using School.Web.Model
+@model School.Web.Pages.Student.UpdateModel
+
+<h2>Actualizar Alumno</h2>
+
+<form method="post">
+    <div class="form-group">
+        <input type="hidden" class="form-control" id="Id" name="Student.Id" asp-for="Student.Id" required />
+
+        <label asp-for="Student.Name">Nombre</label>
+        <input type="text" class="form-control" id="Name" name="Student.Name" asp-for="Student.Name" required />
+        <span asp-validation-for="Student.Name" class="text-danger"></span>
+
+        <label asp-for="Student.LastName">Apellido</label>
+        <input type="text" class="form-control" id="LastName" name="Student.LastName" asp-for="Student.LastName" required />
+        <span asp-validation-for="Student.LastName" class="text-danger"></span>
+
+        <div class="form-group">
+            <label asp-for="Student.Gender">Género</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="genderMale" name="Student.Gender" value="Masculino" asp-for="Student.Gender" required>
+                <label class="form-check-label" for="genderMale">Masculino</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="genderFemale" name="Student.Gender" value="Femenino" asp-for="Student.Gender" required>
+                <label class="form-check-label" for="genderFemale">Femenino</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Student.BirthDate">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="BirthDate" name="Student.BirthDate" asp-for="Student.BirthDate" required />
+            <span asp-validation-for="Student.BirthDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
+</form>
