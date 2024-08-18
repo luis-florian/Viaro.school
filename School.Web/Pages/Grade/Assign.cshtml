@@ -1,0 +1,40 @@
+﻿@page
+@using School.Web.Model
+@model School.Web.Pages.Grade.AssignModel
+
+<h2>Asignar Estudiante a Grado</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="GradeStudent.Section">Session</label>
+        <input type="text" class="form-control" asp-for="GradeStudent.Section" />
+        <span asp-validation-for="GradeStudent.Section" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GradeStudent.StudentId">Seleccionar Estudiante</label>
+        <select asp-for="GradeStudent.StudentId" class="form-control">
+            <option value="">Seleccione un estudiante</option>
+            @foreach (var student in Model.Students)
+            {
+                <option value="@student.Id">@student.Name @student.LastName</option>
+            }
+        </select>
+        <span asp-validation-for="GradeStudent.StudentId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GradeStudent.GradeId">Seleccionar Grado</label>
+        <select asp-for="GradeStudent.GradeId" class="form-control">
+            <option value="">Seleccione un grado</option>
+            @foreach (var grade in Model.Grades)
+            {
+                <option value="@grade.Id">@grade.Name</option>
+            }
+        </select>
+        <span asp-validation-for="GradeStudent.GradeId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Asignar</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
+</form>

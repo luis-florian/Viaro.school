@@ -12,8 +12,4 @@
     <PackageReference Include="Refit.HttpClientFactory" Version="7.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Grade\" />
-  </ItemGroup>
-
 </Project>

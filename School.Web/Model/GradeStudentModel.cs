@@ -2,7 +2,9 @@
 {
     public class GradeStudentModel
     {
-        public required string Section { get; set; }
+        public int StudentId { get; set; }
+        public int GradeId { get; set; }
+        public string? Section { get; set; }
     }
 
     public class UpdateGradeStudentModel

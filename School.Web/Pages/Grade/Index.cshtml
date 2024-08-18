@@ -1,0 +1,115 @@
+﻿@page
+@using School.Web.Model
+@model School.Web.Pages.Grade.IndexModel
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="list-group">
+                <a href="/Grade/Create" type="button" class="list-group-item list-group-item-action">Agregar</a>
+                <a href="/Grade/assign" type="button" class="list-group-item list-group-item-action">Asignar a estudiante</a>
+            </div>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Profesor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Grades != null && Model.Grades.Any())
+                    {
+                        @foreach (var grades in Model.Grades)
+                        {
+                            <tr>
+                                <td data-bs-toggle="modal" data-bs-target="#Modal"
+                                    data-name="@grades.Name" data-name="@grades.Name">
+                                    @grades.Name
+                                </td>
+                                <td data-bs-toggle="modal" data-bs-target="#Modal"
+                                    data-teachername="@grades.TeacherName" data-name="@grades.TeacherName">
+                                    @grades.TeacherName
+                                </td>
+                                <td>
+                                    <a href="/Grade/Update?id=@grades.Id" class="btn btn-warning">Actualizar</a>
+
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@grades.Id" class="d-inline delete-form">
+                                        <button type="button" class="btn btn-danger" onclick="showDeleteConfirmationModal(this)">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Detalles de la Categoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nombre:</strong> <span id="modalName"></span></p>
+                <p><strong>Profesor:</strong> <span id="modalTeacherName"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro que deseas eliminar este estudiante?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var Name = button.data('-name');
+                var TeacherName = button.data('-teachername');
+
+                $('#modalName').text(Name);
+                $('#modalTeacherName').text(TeacherName);
+            });
+
+            var formToSubmit;
+
+            window.showDeleteConfirmationModal = function (button) {
+                formToSubmit = $(button).closest('form');
+                var deleteConfirmationModal = new bootstrap.Modal($('#deleteConfirmationModal')[0]);
+                deleteConfirmationModal.show();
+            };
+
+            $('#confirmDeleteButton').on('click', function () {
+                formToSubmit.submit();
+            });
+        });
+    </script>
+}
